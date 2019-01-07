@@ -2,6 +2,7 @@ package com.alamkanak.weekview;
 
 import android.content.Context;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -53,7 +54,7 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
     private ScrollListener scrollListener;
 
     WeekViewGestureHandler(Context context, View view,
-                                  WeekViewConfig config, WeekViewData<T> data) {
+                           WeekViewConfig config, WeekViewData<T> data) {
         this.listener = (Listener) view;
 
         this.data = data;
@@ -192,13 +193,13 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
         final int startY = (int) drawingConfig.currentOrigin.y;
 
         final int velocityX;
-//        velocityX = (int) (originalVelocityX * config.xScrollingSpeed);
+        velocityX = (int) (originalVelocityX * config.xScrollingSpeed);
         final int velocityY = 0;
-        if (originalVelocityX > 0) {
-            velocityX = 1;
-        } else {
-            velocityX = -1;
-        }
+//        if (originalVelocityX > 0) {
+//            velocityX = 100;
+//        } else {
+//            velocityX = -100;
+//        }
         final int minX = Integer.MIN_VALUE;
         final int maxX = Integer.MAX_VALUE;
 
@@ -212,7 +213,8 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
         final int minY = (int) (dayHeight + headerHeight - viewHeight) * (-1);
         final int maxY = 0;
 
-        scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
+//        Log.e("aswin", "onFlingHorizontal: " + startX + " " + startY + " " + velocityX + " " + velocityY + " " + minX + " " + maxX + " " + minY + " " + maxY);
+//        scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
     }
 
     private void onFlingVertical(float originalVelocityY) {
@@ -452,6 +454,7 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
 
     interface Listener {
         void onScaled();
+
         void onScrolled();
     }
 
