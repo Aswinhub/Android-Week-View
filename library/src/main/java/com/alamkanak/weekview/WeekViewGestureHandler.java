@@ -191,9 +191,14 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
         final int startX = (int) drawingConfig.currentOrigin.x;
         final int startY = (int) drawingConfig.currentOrigin.y;
 
-        final int velocityX = (int) (originalVelocityX * config.xScrollingSpeed);
+        final int velocityX;
+//        velocityX = (int) (originalVelocityX * config.xScrollingSpeed);
         final int velocityY = 0;
-
+        if (originalVelocityX > 0) {
+            velocityX = 1;
+        } else {
+            velocityX = -1;
+        }
         final int minX = Integer.MIN_VALUE;
         final int maxX = Integer.MAX_VALUE;
 
