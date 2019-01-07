@@ -21,6 +21,7 @@ import static java.lang.Math.round;
 
 final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureListener {
 
+
     private enum Direction {
         NONE, LEFT, RIGHT, VERTICAL
     }
@@ -52,6 +53,7 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
 
     private WeekViewLoader<T> weekViewLoader;
     private ScrollListener scrollListener;
+    private OnVerticalScrollListener onVerticalScrollListener;
 
     WeekViewGestureHandler(Context context, View view,
                            WeekViewConfig config, WeekViewData<T> data) {
@@ -91,6 +93,10 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
         });
     }
 
+    public void setVerticalScrollListener(OnVerticalScrollListener verticalScrollListener) {
+        this.onVerticalScrollListener = verticalScrollListener;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //
     //   Gesture Detector
@@ -124,6 +130,14 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
                         currentScrollDirection = Direction.RIGHT;
                     }
                 } else {
+                    if (scroller.isFinished()) {
+
+                        if (distanceY > 0) {
+                            onVerticalScrollListener.onScrollTop();
+                        } else {
+                            onVerticalScrollListener.onScrollDown();
+                        }
+                    }
                     currentScrollDirection = Direction.VERTICAL;
                 }
                 break;
@@ -193,7 +207,6 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
         final int startY = (int) drawingConfig.currentOrigin.y;
 
         final int velocityX;
-//        velocityX = (int) (originalVelocityX * config.xScrollingSpeed);
         final int velocityY = 0;
         if (originalVelocityX > 0) {
             velocityX = (int) (2000 * config.xScrollingSpeed);
@@ -213,7 +226,6 @@ final class WeekViewGestureHandler<T> extends GestureDetector.SimpleOnGestureLis
         final int minY = (int) (dayHeight + headerHeight - viewHeight) * (-1);
         final int maxY = 0;
 
-        Log.e("aswin", "onFlingHorizontal: " + startX + " " + velocityX + " " + originalVelocityX + " " + config.xScrollingSpeed);
         scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
     }
 

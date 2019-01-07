@@ -3,6 +3,7 @@ package com.alamkanak.weekview.sample;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import com.alamkanak.weekview.EmptyViewLongPressListener;
 import com.alamkanak.weekview.EventClickListener;
 import com.alamkanak.weekview.EventLongPressListener;
 import com.alamkanak.weekview.MonthLoader;
+import com.alamkanak.weekview.OnVerticalScrollListener;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewDisplayable;
 import com.alamkanak.weekview.sample.apiclient.Event;
@@ -55,6 +57,17 @@ public class BaseActivity extends AppCompatActivity
         mWeekView.setMonthChangeListener(this);
         mWeekView.setEventLongPressListener(this);
         mWeekView.setEmptyViewLongPressListener(this);
+        mWeekView.setVerticalScrollListener(new OnVerticalScrollListener() {
+            @Override
+            public void onScrollTop() {
+                Log.e("aswin", "onScrollTop: ");
+            }
+
+            @Override
+            public void onScrollDown() {
+                Log.e("aswin", "onScrollDown: ");
+            }
+        });
 
         setupDateTimeInterpreter();
     }
